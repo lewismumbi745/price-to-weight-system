@@ -1,13 +1,18 @@
 FROM php:8.2-apache
 
-# Install MySQL PDO extension
+# Install required PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Copy all project files
+# Enable Apache rewrite
+RUN a2enmod rewrite
+
+# Copy application files
 COPY . /var/www/html/
 
-# Set correct permissions
+# Set the working directory
+WORKDIR /var/www/html
+
+# Set file ownership
 RUN chown -R www-data:www-data /var/www/html
 
-# Enable Apache rewrite module
-RUN a2enmod rewrite
+EXPOSE 80
